@@ -1,0 +1,85 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: plugin\n"
+"POT-Creation-Date: 2018-03-21 11:20+0400\n"
+"PO-Revision-Date: 2018-03-21 11:23+0400\n"
+"Last-Translator: \n"
+"Language-Team: NikolayS93 <NikolayS93@yandex.ru>\n"
+"Language: ru_RU\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.0.6\n"
+"X-Poedit-Basepath: ../.\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Poedit-KeywordsList: __;__e;_n:1,2;_x:1,2c;_ex:1,2c\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: includes/classes\n"
+"X-Poedit-SearchPathExcluded-1: languages\n"
+"X-Poedit-SearchPathExcluded-2: .git\n"
+
+#: admin-clear-theme.php:99
+msgid "Duplicate class "
+msgstr "Повторение класса"
+
+#: includes/admin-settings-page.php:15
+msgid "Admin settings."
+msgstr "Настройки административной части"
+
+#: includes/admin-settings-page.php:16
+msgid "Admin settings"
+msgstr "Настройки админ. части"
+
+#: includes/admin-settings-page.php:60
+msgid "Set super-admin mode in my browser"
+msgstr "Разрешить все действия моему браузеру"
+
+#: includes/libs/wp-admin-forms.php:369
+msgid "Choose an option"
+msgstr "Выберите пунки"
+
+#: includes/settings/global.php:9
+msgid "Allow updates"
+msgstr "Разрешить обновления"
+
+#: includes/settings/global.php:10
+msgid ""
+"Allow WordPress to check for updates and indicate that They are available."
+msgstr "Разрешить WordPress проверять обновления и указывать на их наличие."
+
+#: includes/settings/global.php:15
+msgid "Show all dashboard elements"
+msgstr "Показать всю колсоль"
+
+#: includes/settings/global.php:16
+msgid "Show all built in dashboard elements"
+msgstr "Показывать все предустановленные панели в консоли"
+
+#: includes/settings/global.php:21
+msgid "Show all toolbar elements"
+msgstr "Показать весь тулбар"
+
+#: includes/settings/global.php:22
+msgid "Show all built in toolbar links"
+msgstr ""
+"Показывать все предустановленные ссылки верхнего админ. меню (тулбара)."
+
+#: includes/settings/global.php:27
+msgid "Show hidden menu items"
+msgstr "Показать скрытые пункты меню"
+
+#: includes/settings/global.php:33
+msgid "Show hidden sub menu items"
+msgstr "Показать скрытые пункты под-меню"
+
+#: utils.php:60
+#, php-format
+msgid "Can not have access the file %s (%s)"
+msgstr "Нет доступа к файлу %s (%s)"
+
+#: utils.php:79
+#, php-format
+msgid "The file %s can not be included"
+msgstr "Файл %s не может быть подключен"

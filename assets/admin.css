@@ -1,0 +1,47 @@
+#adminmenu li {
+	position: relative;
+}
+#adminmenu li .after {
+	position: absolute;
+	z-index: 100;
+	top: 0;
+	right: 0;
+	display: block;
+	text-align: center;
+	width: 34px;
+	height: 34px;
+	color: #444;
+	opacity: 1;
+	padding: 0;
+}
+@media only screen and (min-width: 783px) and (max-width: 960px) {
+	#adminmenu li .after {
+		display: none;
+	}
+}
+#adminmenu li .after.hide {
+	color: #fff;
+}
+#adminmenu li .after:hover {
+	color: #fff;
+	opacity: 0.8;
+}
+#adminmenu>li>.after {
+	line-height: 34px;
+}
+#adminmenu li a.after.dashicons {
+	right: 25px;
+	line-height: 36px;
+	padding: 0;
+	font-size: 20px;
+}
+#adminmenu li .wp-submenu .after.dashicons {
+    padding: 0;
+    line-height: 28px;
+}
+#adminmenu li .wp-submenu span.after.dashicons {
+	line-height: 28px;
+}
+
+/** screen and (max-width: 782px) */
+/** only screen and (max-width: 960px) */
