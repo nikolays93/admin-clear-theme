@@ -2,7 +2,7 @@
 
 /*
 Plugin Name: Admin clear theme
-Plugin URI: https://github.com/nikolays93/project-settings
+Plugin URI: https://github.com/nikolays93/admin-clear-theme
 Description: Скрывает нераскрытый функционал WordPress. Предоставляет возможность создавать новые типы записей и редактировать заголовки ранее зарегистрированных.
 Version: 0.0.1
 Author: NikolayS93
