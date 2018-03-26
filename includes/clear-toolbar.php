@@ -17,6 +17,6 @@ function clear_yoast_from_toolbar() {
 }
 
 if( ! Utils::get('clear_toolbar') ) {
-    add_action('admin_bar_menu', array(__NAMESPACE__ . '\clear_toolbar'), 666, 1);
-    add_action('admin_head', array(__NAMESPACE__ . '\clear_yoast_from_toolbar'));
+    add_action('admin_bar_menu', __NAMESPACE__ . '\clear_toolbar', 666);
+    add_action('admin_head', __NAMESPACE__ . '\clear_yoast_from_toolbar');
 }
