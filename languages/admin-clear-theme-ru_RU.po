@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plugin\n"
 "POT-Creation-Date: 2018-03-21 11:20+0400\n"
-"PO-Revision-Date: 2018-03-21 11:23+0400\n"
+"PO-Revision-Date: 2018-03-26 10:43+0400\n"
 "Last-Translator: \n"
 "Language-Team: NikolayS93 <NikolayS93@yandex.ru>\n"
 "Language: ru_RU\n"
@@ -26,11 +26,11 @@ msgstr "Повторение класса"
 
 #: includes/admin-settings-page.php:15
 msgid "Admin settings."
-msgstr "Настройки административной части"
+msgstr "Настройки панели управления."
 
 #: includes/admin-settings-page.php:16
 msgid "Admin settings"
-msgstr "Настройки админ. части"
+msgstr "Панель управления"
 
 #: includes/admin-settings-page.php:60
 msgid "Set super-admin mode in my browser"

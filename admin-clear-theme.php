@@ -3,7 +3,7 @@
 /*
 Plugin Name: Admin clear theme
 Plugin URI: https://github.com/nikolays93/admin-clear-theme
-Description: Скрывает нераскрытый функционал WordPress. Предоставляет возможность создавать новые типы записей и редактировать заголовки ранее зарегистрированных.
+Description: Скрывает нераскрытый функционал WordPress.
 Version: 0.0.1
 Author: NikolayS93
 Author URI: https://vk.com/nikolays_93
@@ -106,6 +106,7 @@ class Plugin
 
             Utils::load_file_if_exists( $include . '/hide-menus.php' );
             Utils::load_file_if_exists( $include . '/clear-dash.php' );
+            Utils::load_file_if_exists( $include . '/clear-toolbar.php' );
         }
 
         Utils::load_file_if_exists( $include . '/disable-check-updates.php' );
