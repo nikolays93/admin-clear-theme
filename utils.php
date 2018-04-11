@@ -1,6 +1,6 @@
 <?php
 
-namespace CDevelopers\AdminClearTheme;
+namespace NikolayS93\AdminSettings;
 
 if ( ! defined( 'ABSPATH' ) )
   exit; // disable direct access
@@ -10,6 +10,11 @@ class Utils
     private static $options;
     private function __construct() {}
     private function __clone() {}
+
+    public static function get_cookie_name() {
+
+        return apply_filters("get_{DOMAIN}_cookie_name", DOMAIN);
+    }
 
     /**
      * Получает название опции плагина
@@ -92,17 +97,9 @@ class Utils
      *                      иначе путь должен начинаться с / (по аналогии с __DIR__)
      * @return string
      */
-    public static function get_plugin_dir( $path = '' )
-    {
-        $dir = PLUGIN_DIR;
-        switch ( $path ) {
-            case 'includes': $dir .= '/includes'; break;
-            case 'libs':     $dir .= '/includes/libs'; break;
-            case 'settings': $dir .= '/includes/settings'; break;
-            default:         $dir .= $path;
-        }
+    public static function get_plugin_dir( $path = '' ) {
 
-        return apply_filters( "get_{DOMAIN}_plugin_dir", $dir, $path );
+        return apply_filters( "get_{DOMAIN}_plugin_dir", PLUGIN_DIR . $path, $path );
     }
 
     /**
@@ -110,11 +107,10 @@ class Utils
      * @param  string $path путь должен начинаться с / (по аналогии с __DIR__)
      * @return string
      */
-    public static function get_plugin_url( $path = '' )
-    {
-        $url = plugins_url( basename(PLUGIN_DIR) ) . $path;
+    public static function get_plugin_url( $path = '' ) {
 
-        return apply_filters( "get_{DOMAIN}_plugin_url", $url, $path );
+        return apply_filters( "get_{DOMAIN}_plugin_url",
+            plugins_url( basename(PLUGIN_DIR) ) . $path, $path );
     }
 
     /**
@@ -166,7 +162,7 @@ class Utils
      * @return mixed
      */
     public static function get_settings( $filename, $args = array() ) {
-
-        return self::load_file_if_exists( self::get_plugin_dir('settings') . '/' . $filename, $args );
+        return self::load_file_if_exists( self::get_plugin_dir() .
+            '/includes/settings/' . $filename . '.php', $args );
     }
 }

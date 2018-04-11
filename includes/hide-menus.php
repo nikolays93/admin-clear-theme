@@ -1,6 +1,6 @@
 <?php
 
-namespace CDevelopers\AdminClearTheme;
+namespace NikolayS93\AdminSettings;
 
 if ( ! defined( 'ABSPATH' ) )
     exit; // Exit if accessed directly
@@ -39,11 +39,8 @@ function hide_submenus_init() {
     }
 }
 
-// echo "<pre style='padding-left: 150px'>";
-// var_dump( Utils::get('menu') );
-// echo "</pre>";
 $page = isset($_GET['page']) ? $_GET['page'] : false;
-if( empty($_COOKIE['developer']) && $page !== Utils::get_option_name() ) {
+if( empty($_COOKIE[ Utils::get_cookie_name() ]) && $page !== Utils::get_option_name() ) {
 
     add_action( 'admin_menu', __NAMESPACE__ . '\hide_menus_init', 9999 );
     add_action( 'admin_menu', __NAMESPACE__ . '\hide_submenus_init', 9999 );

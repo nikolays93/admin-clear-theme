@@ -8,21 +8,23 @@ jQuery(document).ready(function($) {
         subMenuInputSelector = 'input#sub_menu',
 
         // Добавим всем глазки
+        // Insert icons
         addEyes = function( ItemsSelector ) {
             $(ItemsSelector).each(function() {
-                if( 'collapse-menu' == $(this).attr('id') ) return;
-                if( $(this).hasClass( 'wp-menu-separator' ) ) return;
-                if( $(this).hasClass( 'hide-if-no-customize' ) ) return;
+                $self = $(this);
+                if( 'collapse-menu' == $self.attr('id') ) return;
+                if( $self.hasClass( 'wp-menu-separator' ) ) return;
+                if( $self.hasClass( 'hide-if-no-customize' ) ) return;
 
-                $(this).append( '<span class="after dashicons dashicons-hidden"></span>' );
+                $self.append( '<span class="after dashicons dashicons-hidden"></span>' );
             });
         },
 
         // Закрашиваем активные глазки после добавления
         // Fill icons
         checkActive = function() {
-            var mainMenus = menu_disabled.menu.split(',');
-            var subMenus = menu_disabled.sub_menu.split(',');
+            var mainMenus = admin_settings.menu.split(',');
+            var subMenus = admin_settings.sub_menu.split(',');
 
             mainMenus.forEach(function(item, i) {
                 $('a[href="'+item+'"]:first').parent().children('.after').addClass('hide');
@@ -71,12 +73,14 @@ jQuery(document).ready(function($) {
 
     // Toogle Cookie
     $('#admin_mode').on('click', function() {
-        if(!$(this).hasClass('button-primary')) {
+        if( !$(this).hasClass('button-primary') ) {
+            // insert
             var date = new Date(new Date().getTime() + 3600 * 24 * 7 * 1000);
-            document.cookie = "developer=true; path=/; expires=" + date.toUTCString();
+            document.cookie = admin_settings.cookie_name + "=true; path=/; expires=" + date.toUTCString();
         }
         else {
-            document.cookie = "developer=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;";
+            // delete
+            document.cookie = admin_settings.cookie_name + "=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;";
         }
 
         $(this).toggleClass('button-primary');

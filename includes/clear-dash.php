@@ -1,6 +1,6 @@
 <?php
 
-namespace CDevelopers\AdminClearTheme;
+namespace NikolayS93\AdminSettings;
 
 if ( ! defined( 'ABSPATH' ) )
     exit; // Exit if accessed directly

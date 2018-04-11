@@ -1,11 +1,11 @@
 <?php
 
-namespace CDevelopers\AdminClearTheme;
+namespace NikolayS93\AdminSettings;
 
 if ( ! defined( 'ABSPATH' ) )
     exit; // Exit if accessed directly
 
-if( empty($_COOKIE['developer']) ) {
+if( empty($_COOKIE[ Utils::get_cookie_name() ]) ) {
     add_action( 'init', create_function( '$a', "remove_action( 'init', 'wp_version_check' );" ), 2 );
     add_filter( 'pre_option_update_core', create_function( '$a', "return null;" ) );
     remove_action( 'wp_version_check', 'wp_version_check' );

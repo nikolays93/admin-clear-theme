@@ -1,6 +1,8 @@
 <?php
 
-namespace CDevelopers\AdminClearTheme;
+namespace NikolayS93\AdminSettings;
+
+use NikolayS93\WPAdminFormBeta\Form;
 
 if ( ! defined( 'ABSPATH' ) )
     exit; // disable direct access
@@ -14,7 +16,7 @@ class AdminSettingsPage
             'parent' => 'options-general.php',
             'title' => __('Admin settings.', DOMAIN),
             'menu' => __('Admin settings', DOMAIN),
-            'callback'    => array(__CLASS__, 'start_page'),
+            'callback'    => array(__CLASS__, 'page_render'),
             'permissions' => 'manage_options',
             'tab_sections'=> null,
             'columns'     => 1,
@@ -34,13 +36,16 @@ class AdminSettingsPage
             $ver = $plugin_info['Version'];
         }
 
-        wp_enqueue_style( 'admin-clear-theme-style', Utils::get_plugin_url('/assets/admin.css'), array(), $ver );
-        wp_enqueue_script( 'admin-clear-theme-script', Utils::get_plugin_url('/assets/admin.js'),  array('jquery'), $ver, true );
+        wp_enqueue_style( 'admin-settings-style',
+            Utils::get_plugin_url('/assets/admin.css'), array(), $ver );
+        wp_enqueue_script( 'admin-settings-script',
+            Utils::get_plugin_url('/assets/admin.js'),  array('jquery'), $ver, true );
 
-        wp_localize_script( 'admin-clear-theme-script',
-            'menu_disabled', array(
+        wp_localize_script( 'admin-settings-script',
+            'admin_settings', array(
                 'menu' => Utils::get( 'menu' ),
                 'sub_menu' => Utils::get( 'sub_menu' ),
+                'cookie_name' => Utils::get_cookie_name(),
             )
         );
     }
@@ -51,25 +56,19 @@ class AdminSettingsPage
      * @access
      *     must be public for the WordPress
      */
-    static function start_page()
+    static function page_render()
     {
-        $add_class = (!empty($_COOKIE['developer'])) ? 'button button-primary': 'button';
-
-        echo sprintf('<p><input type="button" id="admin_mode" class="%s" value="%s"></p>',
-            esc_attr( $add_class ),
+        printf('<p><input type="button" id="admin_mode" class="button%s" value="%s"></p>',
+            esc_attr( !empty($_COOKIE[ Utils::get_cookie_name() ]) ? ' button-primary' : '' ),
             __( 'Set super-admin mode in my browser', DOMAIN )
         );
 
-        $form = new WP_Admin_Forms(
-            Utils::get_settings('global.php'),
-            $is_table = true );
-
-        echo $form->render();
+        $form = new Form( Utils::get_settings( 'global' ), true );
+        $form->display();
 
         submit_button( 'Сохранить', 'primary', 'save_changes' );
 
         echo '<input type="hidden" name="page[]" value="project-settings" />';
-        echo '<input type="hidden" name="page[]" value="project-settings-start-page" />';
     }
 }
 new AdminSettingsPage();

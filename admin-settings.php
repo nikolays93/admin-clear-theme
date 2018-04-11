@@ -1,10 +1,12 @@
 <?php
 
 /*
-Plugin Name: Admin clear theme
-Plugin URI: https://github.com/nikolays93/admin-clear-theme
-Description: Скрывает нераскрытый функционал WordPress.
-Version: 0.0.1
+Plugin Name: Admin Settings
+Plugin URI: https://github.com/nikolays93/admin-settings
+Description: Hidding unused Wordpress admin functionality
+Version: 1.0
+Text Domain: admin-settings
+Domain Path: /languages/
 Author: NikolayS93
 Author URI: https://vk.com/nikolays_93
 Author EMAIL: nikolayS93@ya.ru
@@ -37,13 +39,16 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
  * clear_page_hide_submenu
  */
 
-namespace CDevelopers\AdminClearTheme;
+namespace NikolayS93\AdminSettings;
 
 if ( ! defined( 'ABSPATH' ) )
   exit; // disable direct access
 
 const PLUGIN_DIR = __DIR__;
-const DOMAIN = 'admin-clear-theme';
+const DOMAIN = 'admin-settings';
+
+__('Admin Settings', DOMAIN);
+__('Hidding unused Wordpress admin functionality', DOMAIN);
 
 // Нужно подключить заранее для активации и деактивации плагина @see activate(), uninstall();
 require __DIR__ . '/utils.php';
@@ -72,7 +77,6 @@ class Plugin
 
         load_plugin_textdomain( DOMAIN, false, basename(PLUGIN_DIR) . '/languages/' );
         self::include_required_files();
-        self::_actions();
         self::_filters();
 
         self::$initialized = true;
@@ -83,36 +87,31 @@ class Plugin
      */
     private static function include_required_files()
     {
-        $include = Utils::get_plugin_dir('includes');
-        $libs    = Utils::get_plugin_dir('libs');
+        $plugin_dir = Utils::get_plugin_dir();
 
         $classes = array(
-            __NAMESPACE__ . '\WP_Admin_Page'  => $libs    . '/wp-admin-page.php',
-            __NAMESPACE__ . '\WP_Admin_Forms' => $libs    . '/wp-admin-forms.php',
+            __NAMESPACE__ . '\WP_Admin_Page' => $plugin_dir . '/vendor/nikolays93/wp-admin-page.php',
+            'NikolayS93\WPAdminForm\Version' => $plugin_dir . '/vendor/nikolays93/WPAdminForm/init.php',
         );
 
         foreach ($classes as $classname => $path) {
-            if( ! class_exists($classname) ) {
-                Utils::load_file_if_exists( $path );
-            }
-            else {
-                Utils::write_debug(__('Duplicate class ' . $classname, DOMAIN), __FILE__);
-            }
+            if( class_exists($classname) ) continue;
+
+            Utils::load_file_if_exists( $path );
         }
 
         // includes
         if( is_admin() ) {
-            Utils::load_file_if_exists( $include . '/admin-settings-page.php' );
+            Utils::load_file_if_exists( $plugin_dir . '/includes/admin-settings-page.php' );
 
-            Utils::load_file_if_exists( $include . '/hide-menus.php' );
-            Utils::load_file_if_exists( $include . '/clear-dash.php' );
-            Utils::load_file_if_exists( $include . '/clear-toolbar.php' );
+            Utils::load_file_if_exists( $plugin_dir . '/includes/hide-menus.php' );
+            Utils::load_file_if_exists( $plugin_dir . '/includes/clear-dash.php' );
+            Utils::load_file_if_exists( $plugin_dir . '/includes/clear-toolbar.php' );
         }
 
-        Utils::load_file_if_exists( $include . '/disable-check-updates.php' );
+        Utils::load_file_if_exists( $plugin_dir . '/includes/disable-check-updates.php' );
     }
 
-    private static function _actions(){}
     private static function _filters()
     {
         add_filter( 'clear_page_hide_menu', array(__CLASS__, 'woocommerce_shop_order_filter'), 10, 1 );

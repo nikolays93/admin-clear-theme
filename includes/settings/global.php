@@ -1,14 +1,14 @@
 <?php
 
-namespace CDevelopers\AdminClearTheme;
+namespace NikolayS93\AdminSettings;
 
 $form = array(
-	array(
-		'type'      => 'checkbox',
-		'id'        => 'check_updates',
-		'label'		=> __('Allow updates', DOMAIN),
-		'desc'      => __('Allow WordPress to check for updates and indicate that They are available.', DOMAIN),
-		),
+	// array(
+	// 	'type'      => 'checkbox',
+	// 	'id'        => 'check_updates',
+	// 	'label'		=> __('Allow updates', DOMAIN),
+	// 	'desc'      => __('Allow WordPress to check for updates and indicate that They are available.', DOMAIN),
+	// 	),
 	array(
 		'type'      => 'checkbox',
 		'id'        => 'clear_dash',
