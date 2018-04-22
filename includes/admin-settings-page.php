@@ -3,6 +3,9 @@
 namespace NikolayS93\AdminSettings;
 
 use NikolayS93\WPAdminFormBeta\Form;
+use NikolayS93\WPAdminPageBeta as Admin;
+// use NikolayS93\WPAdminPageBeta\Page;
+// use NikolayS93\WPAdminPageBeta\Callback;
 
 if ( ! defined( 'ABSPATH' ) )
     exit; // disable direct access
@@ -11,24 +14,63 @@ class AdminSettingsPage
 {
     function __construct()
     {
-        $page = new WP_Admin_Page( Utils::get_option_name() );
-        $page->set_args( array(
+        $page = new Admin\Page( Utils::get_option_name(), __('Admin settings.', DOMAIN), array(
             'parent' => 'options-general.php',
-            'title' => __('Admin settings.', DOMAIN),
             'menu' => __('Admin settings', DOMAIN),
-            'callback'    => array(__CLASS__, 'page_render'),
+            // 'callback' => array(__CLASS__, 'page_render'),
+            // 'validate' => callback,
             'permissions' => 'manage_options',
-            'tab_sections'=> null,
             'columns'     => 1,
         ) );
 
-        $page->set_assets( array($this, '_assets') );
+        $page->set_assets( new Admin\Callback( array($this, '__assets') ) );
+
+        $page->set_content( new Admin\Callback( array($this, 'page_render') ) );
+
+        // $page->add_metabox( new Metabox( 'MetaboxID', __('Metabox Title'), array($this, 'callback'),
+        //     $position = 'normal', $priority = 'high' ) );
+
+        $page->add_section( new Admin\Section(
+            'Console',
+            __('Console'),
+            new Admin\Callback( array($this, 'console_section') )
+        ) );
+
+        $page->add_section( new Admin\Section(
+            'Toolbar',
+            __('Toolbar'),
+            new Admin\Callback( array($this, 'toolbar_section') )
+        ) );
+
+        $page->add_section( new Admin\Section(
+            'Menu',
+            __('Menu'),
+            new Admin\Callback( array($this, 'menu_section') )
+        ) );
+    }
+
+    /**
+     * Основное содержимое страницы
+     *
+     * @access
+     *     must be public for the WordPress
+     */
+    static function page_render()
+    {
+        echo "<p>Эти настройки позволяют скрыть не раскрытый функционал WordPress. Если вы хотите отключить все функции для вашего браузера, воспользуйтесь следующей кнопкой.</p>";
+
+        printf('<p><input type="button" id="admin_mode" class="button%s" value="%s"></p>',
+            esc_attr( !empty($_COOKIE[ Utils::get_cookie_name() ]) ? ' button-primary' : '' ),
+            __( 'Set super-admin mode in my browser', DOMAIN )
+        );
+
+        // echo '<input type="hidden" name="page" value="project-settings" />';
     }
 
     /**
      * Подключает CSS и JS на административные страницы
      */
-    function _assets()
+    function __assets()
     {
         $ver = false;
         if( is_file(PLUGIN_DIR . '/' . DOMAIN . '.php') ) {
@@ -50,25 +92,28 @@ class AdminSettingsPage
         );
     }
 
-    /**
-     * Основное содержимое страницы
-     *
-     * @access
-     *     must be public for the WordPress
-     */
-    static function page_render()
+    function console_section()
     {
-        printf('<p><input type="button" id="admin_mode" class="button%s" value="%s"></p>',
-            esc_attr( !empty($_COOKIE[ Utils::get_cookie_name() ]) ? ' button-primary' : '' ),
-            __( 'Set super-admin mode in my browser', DOMAIN )
-        );
-
-        $form = new Form( Utils::get_settings( 'global' ), true );
+        $form = new Form( Utils::get_settings( 'console' ), true );
         $form->display();
 
         submit_button( 'Сохранить', 'primary', 'save_changes' );
+    }
 
-        echo '<input type="hidden" name="page[]" value="project-settings" />';
+    function toolbar_section()
+    {
+        $form = new Form( Utils::get_settings( 'toolbar' ), true );
+        $form->display();
+
+        submit_button( 'Сохранить', 'primary', 'save_changes' );
+    }
+
+    function menu_section()
+    {
+        $form = new Form( Utils::get_settings( 'menu' ), true );
+        $form->display();
+
+        submit_button( 'Сохранить', 'primary', 'save_changes' );
     }
 }
 new AdminSettingsPage();

@@ -37,6 +37,8 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
  * clear_page_hide_menu
  * clear_page_hide_submenu_parent
  * clear_page_hide_submenu
+ *
+ * NikolayS93\AdminSettings\DisableUpdates
  */
 
 namespace NikolayS93\AdminSettings;
@@ -77,7 +79,7 @@ class Plugin
 
         load_plugin_textdomain( DOMAIN, false, basename(PLUGIN_DIR) . '/languages/' );
         self::include_required_files();
-        self::_filters();
+        Utils::get_plugin_dir('/includes/filters.php');
 
         self::$initialized = true;
     }
@@ -90,8 +92,8 @@ class Plugin
         $plugin_dir = Utils::get_plugin_dir();
 
         $classes = array(
-            __NAMESPACE__ . '\WP_Admin_Page' => $plugin_dir . '/vendor/nikolays93/wp-admin-page.php',
             'NikolayS93\WPAdminForm\Version' => $plugin_dir . '/vendor/nikolays93/WPAdminForm/init.php',
+            'NikolayS93\WPAdminPage\Version' => $plugin_dir . '/vendor/nikolays93/WPAdminPage/init.php',
         );
 
         foreach ($classes as $classname => $path) {
@@ -101,32 +103,20 @@ class Plugin
         }
 
         // includes
-        if( is_admin() ) {
-            Utils::load_file_if_exists( $plugin_dir . '/includes/admin-settings-page.php' );
+        Utils::load_file_if_exists( $plugin_dir . '/includes/admin-settings-page.php' );
 
-            Utils::load_file_if_exists( $plugin_dir . '/includes/hide-menus.php' );
-            Utils::load_file_if_exists( $plugin_dir . '/includes/clear-dash.php' );
-            Utils::load_file_if_exists( $plugin_dir . '/includes/clear-toolbar.php' );
+        if( is_admin() ) {
+            Utils::load_file_if_exists( $plugin_dir . '/includes/actions/hide-menus.php' );
+            Utils::load_file_if_exists( $plugin_dir . '/includes/actions/clear-dash.php' );
         }
 
-        Utils::load_file_if_exists( $plugin_dir . '/includes/disable-check-updates.php' );
-    }
+        if( is_user_logged_in() ) {
+            Utils::load_file_if_exists( $plugin_dir . '/includes/actions/clear-toolbar.php' );
+        }
 
-    private static function _filters()
-    {
-        add_filter( 'clear_page_hide_menu', array(__CLASS__, 'woocommerce_shop_order_filter'), 10, 1 );
-        add_filter( 'clear_page_hide_submenu_parent', array(__CLASS__, 'woocommerce_shop_order_filter'), 10, 1 );
-    }
-
-    static function woocommerce_shop_order_filter( $menu ) {
-        if( 'edit.php?post_type=shop_order' === $menu )
-            $menu = 'woocommerce';
-
-        return $menu;
+        Utils::load_file_if_exists( $plugin_dir . '/includes/actions/disable-check-updates.php' );
     }
 }
-
-
 
 register_activation_hook( __FILE__, array( __NAMESPACE__ . '\Plugin', 'activate' ) );
 register_uninstall_hook( __FILE__, array( __NAMESPACE__ . '\Plugin', 'uninstall' ) );
