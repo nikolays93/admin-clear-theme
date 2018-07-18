@@ -41,68 +41,6 @@ class Utils
     }
 
     /**
-     * Записывает ошибку
-     * @param  string $msg  Текст ошибки
-     * @param  string $path Путь до файла с ошибкой
-     */
-    public static function write_debug( $msg, $path )
-    {
-        if( ! defined('WP_DEBUG_LOG') || ! WP_DEBUG_LOG )
-            return;
-
-        $plugin_dir = self::get_plugin_dir();
-        $path = str_replace($plugin_dir, '', $path);
-        $msg = str_replace($plugin_dir, '', $msg);
-
-        $date = new \DateTime();
-        $date_str = $date->format(\DateTime::W3C);
-
-        if( $handle = @fopen($plugin_dir . "/debug.log", "a+") ) {
-            fwrite($handle, "[{$date_str}] {$msg} ({$path})\r\n");
-            fclose($handle);
-        }
-        elseif (defined('WP_DEBUG_DISPLAY') && WP_DEBUG_DISPLAY) {
-            echo sprintf( __('Can not have access the file %s (%s)', DOMAIN),
-                __DIR__ . "/debug.log",
-                $path );
-        }
-    }
-
-    /**
-     * Загружаем файл если существует
-     * @todo Добавить backtrace
-     *
-     * @param  string  $filename Полный путь до файла
-     * @param  array   $args     Аргументы что нужно передать в файл
-     * @param  boolean $once     Использовать приставку _once ответ вернет boolean, иначе результат файла
-     * @param  boolean $reqire   Может ли система работать дальше без этого файла
-     * @return mixed (read $once param)
-     */
-    public static function load_file_if_exists( $filename, $args = array(), $once = false, $reqire = false )
-    {
-        if ( ! is_readable( $filename ) ) {
-            self::write_debug(sprintf(__('The file %s can not be included', DOMAIN), $filename), __FILE__);
-            return false;
-        }
-
-        if( $reqire ) $file = ( $once ) ? require_once( $filename ) : require( $filename );
-        else          $file = ( $once ) ? include_once( $filename ) : include( $filename );
-
-        return apply_filters( "load_{DOMAIN}_file_if_exists", $file, $filename );
-    }
-
-    /**
-     * Получаем директорию плагина (на сервере)
-     * @param  string $path зарегистрированные переменные (case'ы)
-     *                      иначе путь должен начинаться с / (по аналогии с __DIR__)
-     * @return string
-     */
-    public static function get_plugin_dir( $path = '' ) {
-
-        return apply_filters( "get_{DOMAIN}_plugin_dir", PLUGIN_DIR . $path, $path );
-    }
-
-    /**
      * Получаем url (адресную строку) до плагина
      * @param  string $path путь должен начинаться с / (по аналогии с __DIR__)
      * @return string
@@ -117,19 +55,13 @@ class Utils
      * Получает параметр из опции плагина
      * @todo Добавить фильтр
      *
-     * @param  string  $prop_name Ключ опции плагина или 'all' (вернуть опцию целиком)
+     * @param  string  $prop_name Ключ опции плагина
      * @param  mixed   $default   Что возвращать, если параметр не найден
      * @return mixed
      */
     public static function get( $prop_name, $default = false )
     {
         $option = self::get_option();
-        if( 'all' === $prop_name ) {
-            if( is_array($option) && count($option) )
-                return $option;
-
-            return $default;
-        }
 
         return isset( $option[ $prop_name ] ) ? $option[ $prop_name ] : $default;
     }
@@ -162,7 +94,10 @@ class Utils
      * @return mixed
      */
     public static function get_settings( $filename, $args = array() ) {
-        return self::load_file_if_exists( self::get_plugin_dir() .
-            '/includes/settings/' . $filename . '.php', $args );
+        $filename = PLUGIN_DIR . '/includes/settings/' . $filename . '.php';
+        if( file_exists( $filename ) )
+            return include $filename;
+
+        return false;
     }
 }
